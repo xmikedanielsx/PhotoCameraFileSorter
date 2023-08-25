@@ -2,63 +2,66 @@
 using MetadataExtractor.Formats.FileSystem;
 using Microsoft.Extensions.Configuration;
 using System.Reflection.Metadata.Ecma335;
-static async Task Main(string[] args)
-{
 
-    IConfiguration Configuration = new ConfigurationBuilder()
-      .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-      .AddEnvironmentVariables()
-      .AddCommandLine(args)
-      .Build();
-}
-string imagesPath = @"D:\Projects\Personal\YouTubeDemos\FileRenaming\Photos";
+
+IConfiguration Configuration = new ConfigurationBuilder()
+    .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+    .AddEnvironmentVariables()
+    .AddCommandLine(args)
+    .Build();
+
+var imagesPath = Configuration.GetValue<string>("myImagesPath");
+//var imagesPath = Configuration.GetValue("string", "imagesPath");
+
+
+
 DirectoryInfo di = new DirectoryInfo(imagesPath);
 string[] cameraList = new string[]
 {
-    "Blackmagic Design",
-    "VisionTek",
-    "Advert Tech",
-    "Aigo",
-    "Akaso",
-    "DJI",
-    "Foscam",
-    "Insta360",
-    "Seagull Camera",
-    "Phase One",
-    "Thomson",
-    "AgfaPhoto",
-    "Leica",
-    "Medion",
-    "Minox",
-    "Praktica",
-    "Rollei",
-    "Tevion",
-    "Traveler",
-    "Vageeswari",
-    "Canon",
-    "Casio",
-    "Epson",
-    "Fujifilm",
-    "Nikon",
-    "Olympus",
-    "Ricoh",
-    "Panasonic",
-    "Pentax",
-    "Sigma",
-    "Sony",
-    "Samsung",
-    "Hasselblad",
-    "Memoto",
-    "BenQ",
-    "Genius",
-    "Bell & Howell",
-    "GE",
-    "GoPro",
-    "HP",
-    "Kodak",
-    "Lytro",
-    "Polaroid",
-    "Vivitar",
+"Blackmagic Design",
+"VisionTek",
+"Advert Tech",
+"Aigo",
+"Akaso",
+"DJI",
+"Foscam",
+"Insta360",
+"Seagull Camera",
+"Phase One",
+"Thomson",
+"AgfaPhoto",
+"Leica",
+"Medion",
+"Minox",
+"Praktica",
+"Rollei",
+"Tevion",
+"Traveler",
+"Vageeswari",
+"Canon",
+"Casio",
+"Epson",
+"Fujifilm",
+"Nikon",
+"Olympus",
+"Ricoh",
+"Panasonic",
+"Pentax",
+"Sigma",
+"Sony",
+"Samsung",
+"Hasselblad",
+"Memoto",
+"BenQ",
+"Genius",
+"Bell & Howell",
+"GE",
+"GoPro",
+"HP",
+"Kodak",
+"Lytro",
+"Polaroid",
+"Vivitar",
 
 };
 
@@ -72,7 +75,7 @@ foreach (FileInfo file in di.GetFiles())
         Tag? makeTag = exifInfo.Tags.Where(d => d.Name.ToUpper().Contains("MAKE")).FirstOrDefault();
         if (makeTag != null)
         {
-            foreach(string camera in cameraList)
+            foreach (string camera in cameraList)
             {
                 if (makeTag.Description.ToUpper().Contains(camera.ToUpper()))
                 {
